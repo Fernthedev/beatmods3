@@ -1,8 +1,9 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
+import { PackageMetadata } from "../../../types.tsx";
 import { getPackage } from "../../api/repo/[version]/[id].tsx";
 
 type PackagePageData = {
-  package_: Record<string, unknown>
+  package_: PackageMetadata
 };
 
 export const handler: Handlers<PackagePageData> = {

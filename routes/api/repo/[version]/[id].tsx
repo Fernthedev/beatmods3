@@ -1,10 +1,11 @@
 import { Handlers } from "$fresh/server.ts";
 import { githubRepository, octokit } from "../../../../fresh.config.ts";
+import { PackageMetadata } from "../../../../types.tsx";
 
 export async function getPackage(
   version: string,
   id: string,
-): Promise<Record<string, unknown>> {
+): Promise<PackageMetadata> {
   // Create a personal access token at https://github.com/settings/tokens/new?scopes=repo
 
   const contents = await octokit.rest.repos.getContent(
@@ -25,7 +26,7 @@ export async function getPackage(
 }
 
 type VersionAPIData = {
-  package_: Record<string, unknown>;
+  package_: PackageMetadata;
 };
 
 export const handler: Handlers<VersionAPIData | null> = {
