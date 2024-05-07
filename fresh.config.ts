@@ -7,8 +7,8 @@ const env = await load();
 const token = env["GITHUB_TOKEN"];
 
 export const githubRepository = {
-  owner: "Lauriethefish",
-  repo: "quest-mod-template",
+  owner: "Fernthedev",
+  repo: "beatmods3-bs",
 } as const;
 
 if (!token || token.length === 0) {
