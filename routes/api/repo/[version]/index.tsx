@@ -6,9 +6,9 @@ export async function getPackagesInVersion(version: string): Promise<string[]> {
 
   const tree = await octokit.rest.git.getTree(
     {
-      owner: "Fernthedev",
-      repo: "quest-rue",
-      tree_sha: "master",
+      owner: "Lauriethefish",
+      repo: "quest-mod-template",
+      tree_sha: "main",
       recursive: "true",
     },
   );
