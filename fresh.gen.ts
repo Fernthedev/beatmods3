@@ -6,6 +6,7 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $api_joke from "./routes/api/joke.ts";
 import * as $api_repo_version_package_index from "./routes/api/repo/[version]/[package]/index.tsx";
+import * as $api_repo_version_index from "./routes/api/repo/[version]/index.tsx";
 import * as $greet_name_ from "./routes/greet/[name].tsx";
 import * as $index from "./routes/index.tsx";
 import * as $repo_version_index from "./routes/repo/[[version]]/index.tsx";
@@ -19,6 +20,7 @@ const manifest = {
     "./routes/api/joke.ts": $api_joke,
     "./routes/api/repo/[version]/[package]/index.tsx":
       $api_repo_version_package_index,
+    "./routes/api/repo/[version]/index.tsx": $api_repo_version_index,
     "./routes/greet/[name].tsx": $greet_name_,
     "./routes/index.tsx": $index,
     "./routes/repo/[[version]]/index.tsx": $repo_version_index,
