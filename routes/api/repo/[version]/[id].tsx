@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { octokit } from "../../../../fresh.config.ts";
+import { githubRepository, octokit } from "../../../../fresh.config.ts";
 
 export async function getPackage(
   version: string,
@@ -9,8 +9,7 @@ export async function getPackage(
 
   const contents = await octokit.rest.repos.getContent(
     {
-      owner: "Lauriethefish",
-      repo: "quest-mod-template",
+      ...githubRepository,
       path: `${version}/${id}.json`,
     },
   );

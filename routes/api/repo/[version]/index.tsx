@@ -1,13 +1,12 @@
 import { Handlers } from "$fresh/server.ts";
-import { octokit } from "../../../../fresh.config.ts";
+import { githubRepository, octokit } from "../../../../fresh.config.ts";
 
 export async function getPackagesInVersion(version: string): Promise<string[]> {
   // Create a personal access token at https://github.com/settings/tokens/new?scopes=repo
 
   const tree = await octokit.rest.git.getTree(
     {
-      owner: "Lauriethefish",
-      repo: "quest-mod-template",
+      ...githubRepository,
       tree_sha: "main",
       recursive: "true",
     },
