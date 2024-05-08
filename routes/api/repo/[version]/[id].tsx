@@ -1,6 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
 import { githubRepository, octokit } from "../../../../fresh.config.ts";
-import { PackageMetadata } from "../../../../types.tsx";
+import { PackageMetadata } from "../../../../types.ts";
 
 export async function getPackage(
   version: string,
@@ -31,10 +31,10 @@ type VersionAPIData = {
   package_: PackageMetadata;
 };
 
-export const handler: Handlers<VersionAPIData | null> = {
+export const handler: Handlers<null> = {
   async GET(_req, ctx) {
     const { version, id } = ctx.params;
     const package_ = await getPackage(version, id);
-    return ctx.render({ package_ });
+    return new Response(JSON.stringify(package_));
   },
 };

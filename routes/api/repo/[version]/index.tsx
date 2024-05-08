@@ -34,14 +34,10 @@ export async function getPackagesInVersion(version: string): Promise<string[]> {
   return filesInVersion;
 }
 
-type VersionAPIData = {
-  packages: string[];
-};
-
-export const handler: Handlers<VersionAPIData | null> = {
+export const handler: Handlers<null> = {
   async GET(_req, ctx) {
     const { version } = ctx.params;
     const packages = await getPackagesInVersion(version);
-    return ctx.render({ packages });
+    return new Response(JSON.stringify(packages));
   },
 };

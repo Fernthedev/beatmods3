@@ -1,5 +1,5 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { PackageMetadata } from "../../../types.tsx";
+import { PackageMetadata } from "../../../types.ts";
 import { getPackage } from "../../api/repo/[version]/[id].tsx";
 
 type PackagePageData = {
