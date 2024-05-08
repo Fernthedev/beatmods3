@@ -62,38 +62,6 @@ export async function getPackagesAsCollection(): Promise<
     }, {} as Record<string, PackageMetadata[]>);
 
   return grouped;
-
-  //   const versions = await getVersions();
-
-  //   const promises = versions.map(async (version) => {
-  //     const contents = await octokit.rest.repos.getContent(
-  //       {
-  //         ...githubRepository,
-  //         path: `/${version}`,
-  //       },
-  //     );
-
-  //     if (!Array.isArray(contents.data)) {
-  //       throw "Directory listing returned an object";
-  //     }
-
-  //     console.log(version);
-
-  //     return contents.data
-  //       .map((x) => {
-  //         console.log(x);
-
-  //         return x;
-  //       })
-  //       .filter((x) => x.type === "file")
-  //       .filter((x) => x.content)
-  //       .filter((x) => x.path.endsWith(".json"))
-  //       .map((x) => JSON.parse(atob(x.content!)) as PackageMetadata);
-  //   });
-
-  //   const resolved = await Promise.all(promises);
-
-  //   return resolved.flatMap((x) => x);
 }
 
 export const handler: Handlers<null> = {
