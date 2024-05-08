@@ -7,27 +7,20 @@ export const githubRepository = {
   repo: "beatmods3-bs",
 } as const;
 
-const token = Deno.env.get("GITHUB_TOKEN");
-
-if (!token || token.length === 0) {
-  console.error(
-    "Github token not found. Generate one here and add it to `.env` as GITHUB_TOKEN={token}",
-  );
-  console.error("https://github.com/settings/tokens/new?scopes=repo");
-
-  throw "No Github token!";
-}
-
 // Create a personal access token at https://github.com/settings/tokens/new?scopes=repo
-export const octokit = new Octokit({
-  auth: token,
-});
+export let octokit: Octokit;
 
-console.log("Authenticated octokit");
-const {
-  data: { login },
-} = await octokit.rest.users.getAuthenticated();
-console.log("Hello", login);
+export async function setupOctokit(token: string) {
+  octokit = new Octokit({
+    auth: token,
+  });
+
+  console.log("Authenticated octokit");
+  const {
+    data: { login },
+  } = await octokit.rest.users.getAuthenticated();
+  console.log("Hello", login);
+}
 
 export default defineConfig({
   plugins: [tailwind()],
