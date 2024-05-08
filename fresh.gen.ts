@@ -4,10 +4,8 @@
 
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
-import * as $api_joke from "./routes/api/joke.ts";
 import * as $api_repo_version_id_ from "./routes/api/repo/[version]/[id].tsx";
 import * as $api_repo_version_index from "./routes/api/repo/[version]/index.tsx";
-import * as $greet_name_ from "./routes/greet/[name].tsx";
 import * as $index from "./routes/index.tsx";
 import * as $repo_version_id_ from "./routes/repo/[[version]]/[id].tsx";
 import * as $repo_version_index from "./routes/repo/[[version]]/index.tsx";
@@ -18,10 +16,8 @@ const manifest = {
   routes: {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
-    "./routes/api/joke.ts": $api_joke,
     "./routes/api/repo/[version]/[id].tsx": $api_repo_version_id_,
     "./routes/api/repo/[version]/index.tsx": $api_repo_version_index,
-    "./routes/greet/[name].tsx": $greet_name_,
     "./routes/index.tsx": $index,
     "./routes/repo/[[version]]/[id].tsx": $repo_version_id_,
     "./routes/repo/[[version]]/index.tsx": $repo_version_index,
