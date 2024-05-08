@@ -1,6 +1,9 @@
 import { defineConfig } from "$fresh/server.ts";
 import tailwind from "$fresh/plugins/tailwind.ts";
 import { Octokit } from "https://esm.sh/octokit@3.2.1?dts";
+import { load } from "$std/dotenv/mod.ts";
+
+await load({export: true})
 
 const token = Deno.env.get("GITHUB_TOKEN");
 
