@@ -12,6 +12,8 @@ export async function getPackagesInVersion(version: string): Promise<string[]> {
     },
   );
 
+  // TODO: Sanitize version
+
   const filesInVersion = tree.data.tree
     .map((x) => x.path!)
     .filter((x) => x.startsWith(`${version}/`));

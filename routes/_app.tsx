@@ -12,14 +12,16 @@ export default function App({ Component }: PageProps) {
         <nav class="navbar bg-base-100">
           <a class="btn btn-ghost text-xl">daisyUI</a>
         </nav>
-        <Component />
+        <div class={"bg-base-200 content"}>
+          <Component />
+        </div>
+        <footer className="footer items-center p-4 bg-neutral text-neutral-content">
+          <aside className="items-center grid-flow-row prose">
+            <p class={"italic"}>Pronounced BeatMods 3!</p>
+            <p>Copyright © 2024 - All right reserved</p>
+          </aside>
+        </footer>
       </body>
-      <footer className="footer items-center p-4 bg-neutral text-neutral-content">
-        <aside className="items-center grid-flow-row prose">
-          <p class={"italic"}>Pronounced BeatMods 3!</p>
-          <p>Copyright © 2024 - All right reserved</p>
-        </aside>
-      </footer>
     </html>
   );
 }

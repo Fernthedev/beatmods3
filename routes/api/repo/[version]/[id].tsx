@@ -8,6 +8,8 @@ export async function getPackage(
 ): Promise<PackageMetadata> {
   // Create a personal access token at https://github.com/settings/tokens/new?scopes=repo
 
+  // TODO: Sanitize version and id
+
   const contents = await octokit.rest.repos.getContent(
     {
       ...githubRepository,

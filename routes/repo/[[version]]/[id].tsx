@@ -3,7 +3,7 @@ import { PackageMetadata } from "../../../types.tsx";
 import { getPackage } from "../../api/repo/[version]/[id].tsx";
 
 type PackagePageData = {
-  package_: PackageMetadata
+  package_: PackageMetadata;
 };
 
 export const handler: Handlers<PackagePageData> = {
@@ -15,13 +15,26 @@ export const handler: Handlers<PackagePageData> = {
 };
 
 export default function VersionListPage(props: PageProps<PackagePageData>) {
-  const { version } = props.params;
+  const { id, version } = props.params;
   const { package_ } = props.data;
 
   return (
-    <main>
-      <p>Version {version}!</p>
-      <p>Packages {JSON.stringify(package_)}</p>
+    <main className="hero">
+      <div className="hero-content text-center">
+        <div className="max-w-md">
+          <h1 className="text-5xl font-bold prose">Package {id}</h1>
+          <div className={"py-6 prose"}>
+            <p>Version {package_.version}</p>
+            {package_.checksum && <p>Checksum {package_.checksum}</p>}
+          </div>
+
+          {package_.qmodUrl && (
+            <a className="btn btn-primary" href={package_.qmodUrl}>
+              Download
+            </a>
+          )}
+        </div>
+      </div>
     </main>
   );
 }
