@@ -10,7 +10,7 @@ export default function App({ Component }: PageProps) {
       </head>
       <body>
         <nav class="navbar bg-base-100">
-          <a class="btn btn-ghost text-xl">daisyUI</a>
+          <a class="btn btn-ghost text-xl">QeatMods 3</a>
         </nav>
         <div class={"bg-base-200 content"}>
           <Component />
