@@ -14,9 +14,6 @@ export const githubRepository = {
 // Create a personal access token at https://github.com/settings/tokens/new?scopes=repo
 export let octokit: Octokit;
 
-const token = Deno.env.get("GITHUB_TOKEN");
-setupOctokit(token);
-
 export async function setupOctokit(token: string | undefined) {
   if (!token || token.length === 0) {
     console.error(
