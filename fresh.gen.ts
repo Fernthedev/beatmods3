@@ -4,10 +4,10 @@
 
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
-import * as $api_repo_version_id_ from "./routes/api/repo/[version]/[id].tsx";
-import * as $api_repo_version_index from "./routes/api/repo/[version]/index.tsx";
-import * as $api_repo_index from "./routes/api/repo/index.tsx";
-import * as $api_repo_mods_json from "./routes/api/repo/mods.json.tsx";
+import * as $api_repo_version_id_ from "./routes/api/repo/[version]/[id].ts";
+import * as $api_repo_version_index from "./routes/api/repo/[version]/index.ts";
+import * as $api_repo_index from "./routes/api/repo/index.ts";
+import * as $api_repo_mods_json from "./routes/api/repo/mods.json.ts";
 import * as $index from "./routes/index.tsx";
 import * as $repo_version_id_ from "./routes/repo/[[version]]/[id].tsx";
 import * as $repo_version_index from "./routes/repo/[[version]]/index.tsx";
@@ -18,10 +18,10 @@ const manifest = {
   routes: {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
-    "./routes/api/repo/[version]/[id].tsx": $api_repo_version_id_,
-    "./routes/api/repo/[version]/index.tsx": $api_repo_version_index,
-    "./routes/api/repo/index.tsx": $api_repo_index,
-    "./routes/api/repo/mods.json.tsx": $api_repo_mods_json,
+    "./routes/api/repo/[version]/[id].ts": $api_repo_version_id_,
+    "./routes/api/repo/[version]/index.ts": $api_repo_version_index,
+    "./routes/api/repo/index.ts": $api_repo_index,
+    "./routes/api/repo/mods.json.ts": $api_repo_mods_json,
     "./routes/index.tsx": $index,
     "./routes/repo/[[version]]/[id].tsx": $repo_version_id_,
     "./routes/repo/[[version]]/index.tsx": $repo_version_index,

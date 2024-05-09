@@ -1,5 +1,5 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { getPackagesInVersion } from "../../api/repo/[version]/index.tsx";
+import { getPackagesInVersion } from "../../api/repo/[version]/index.ts";
 
 type VersionPageData = {
   packages: string[];
