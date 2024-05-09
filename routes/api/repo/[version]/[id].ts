@@ -1,6 +1,11 @@
 import { Handlers } from "$fresh/server.ts";
-import { githubRepository, octokit } from "../../../../fresh.config.ts";
+import {
+  filePackagePathRegex,
+  githubRepository,
+  octokit,
+} from "../../../../fresh.config.ts";
 import { PackageMetadata } from "../../../../types.ts";
+import * as path from "$std/path/mod.ts";
 
 export async function getPackage(
   version: string,
@@ -8,23 +13,32 @@ export async function getPackage(
 ): Promise<PackageMetadata> {
   // Create a personal access token at https://github.com/settings/tokens/new?scopes=repo
 
+  return getPackageContent(`${version}/${id}.json`);
+}
+
+export async function getPackageContent(filePath: string) {
   // TODO: Sanitize version and id
 
-  const contents = await octokit.rest.repos.getContent(
-    {
-      ...githubRepository,
-      path: `${version}/${id}.json`,
-    },
-  );
+  if (!filePath.match(filePackagePathRegex)) {
+    throw "File path does not match regex! should be {version}/{id}.json";
+  }
 
-  if (Array.isArray(contents.data)) throw new Deno.errors.IsADirectory();
-  if (contents.data.type !== "file") throw new Deno.errors.IsADirectory();
-  
-  const base64Decode = atob(contents.data.content)
+  const id = path.basename(filePath, path.extname(filePath));
 
-  const json = JSON.parse(base64Decode);
+  const content = await octokit.rest.repos.getContent({
+    ...githubRepository,
+    path: filePath!,
+  });
+  if (Array.isArray(content.data)) throw new Deno.errors.IsADirectory();
+  if (content.data.type !== "file") throw new Deno.errors.IsADirectory();
+  if (!content.data.content) throw "Content is null!";
 
-  return json;
+  const packageMetadata = JSON.parse(atob(content.data.content!));
+
+  return {
+    ...packageMetadata,
+    id: id,
+  } satisfies PackageMetadata;
 }
 
 type VersionAPIData = {

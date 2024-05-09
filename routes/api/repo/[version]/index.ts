@@ -1,7 +1,15 @@
 import { Handlers } from "$fresh/server.ts";
-import { githubRepository, octokit } from "../../../../fresh.config.ts";
+import {
+  filePackagePathRegex,
+  githubRepository,
+  octokit,
+} from "../../../../fresh.config.ts";
+import { PackageMetadata } from "../../../../types.ts";
+import { getPackageContent } from "./[id].ts";
 
-export async function getPackagesInVersion(version: string): Promise<string[]> {
+export async function getPackageNamesInVersion(
+  version: string,
+): Promise<string[]> {
   // Create a personal access token at https://github.com/settings/tokens/new?scopes=repo
 
   const tree = await octokit.rest.git.getTree(
@@ -34,10 +42,34 @@ export async function getPackagesInVersion(version: string): Promise<string[]> {
   return filesInVersion;
 }
 
+export async function getPackagesInVersion(
+  version: string,
+): Promise<PackageMetadata[]> {
+  const tree = await octokit.rest.git.getTree(
+    {
+      ...githubRepository,
+      tree_sha: "main",
+      recursive: "true",
+    },
+  );
+
+  const parsedContent = tree.data.tree
+    .filter((x) => x.path?.startsWith(`${version}/`))
+    .filter((x) => x.path?.match(filePackagePathRegex))
+    .map((entry) => getPackageContent(entry.path!));
+
+  const finished = await Promise.all(parsedContent);
+
+  return finished
+    // nonnulify
+    .filter((x) => x)
+    .map((x) => x!);
+}
+
 export const handler: Handlers<null> = {
   async GET(_req, ctx) {
     const { version } = ctx.params;
-    const packages = await getPackagesInVersion(version);
+    const packages = await getPackageNamesInVersion(version);
     return new Response(JSON.stringify(packages));
   },
 };

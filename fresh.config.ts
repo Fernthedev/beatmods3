@@ -1,6 +1,10 @@
 import { defineConfig } from "$fresh/server.ts";
 import tailwind from "$fresh/plugins/tailwind.ts";
 import { Octokit } from "https://esm.sh/octokit@3.2.1?dts";
+import { PackageMetadata } from "./types.ts";
+import * as path from "$std/path/mod.ts";
+
+export const filePackagePathRegex = /^[\d\.]+\/[\w]+\.json/;
 
 export const githubRepository = {
   owner: "Fernthedev",

@@ -1,4 +1,6 @@
 export interface PackageMetadata {
+    id: string, // overwritten at server
+
     version: string,
     qmodUrl: string,
     checksum?: string

@@ -2,6 +2,7 @@ import { Handlers } from "$fresh/server.ts";
 import { githubRepository, octokit } from "../../../fresh.config.ts";
 import { PackageMetadata } from "../../../types.ts";
 import * as path from "$std/path/mod.ts";
+import { getPackageContent } from "./[version]/[id].ts";
 
 type PackageVersionTuple = [version: string, package_: PackageMetadata];
 
@@ -23,10 +24,7 @@ export async function getPackagesAsCollection(): Promise<
     .filter((x) => x.path?.match(/^[\d\.]+\/[\w]+\.json/))
     .map(
       async (x) => {
-        const content = await octokit.rest.repos.getContent({
-          ...githubRepository,
-          path: x.path!,
-        });
+        const content = await getPackageContent(x.path!);
 
         return {
           ...content,
