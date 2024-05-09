@@ -12,7 +12,7 @@ export const githubRepository = {
 } as const;
 
 // Create a personal access token at https://github.com/settings/tokens/new?scopes=repo
-let octokit: Octokit;
+export let octokit: Octokit;
 
 export async function setupOctokit(token: string | undefined) {
   if (!token || token.length === 0) {
