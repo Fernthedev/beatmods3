@@ -38,7 +38,7 @@ export async function getPackageContent(filePath: string) {
   return {
     ...packageMetadata,
     id: id,
-  } satisfies PackageMetadata;
+  } as PackageMetadata;
 }
 
 type VersionAPIData = {

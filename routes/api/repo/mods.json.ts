@@ -26,30 +26,17 @@ export async function getPackagesAsCollection(): Promise<
       async (x) => {
         const content = await getPackageContent(x.path!);
 
-        return {
-          ...content,
-          version: path.dirname(x.path!),
-        };
+        return [
+          path.dirname(x.path!),
+          content,
+        ] as PackageVersionTuple;
       },
     );
 
   const resolvedPromises = await Promise.all(listFiles);
 
-  const parsedContent = resolvedPromises.map((x) => {
-    if (Array.isArray(x.data)) return null;
-    if (x.data.type !== "file") return null;
-
-    return [
-      x.version,
-      JSON.parse(atob(x.data.content!)),
-    ] as PackageVersionTuple;
-  })
-    // nonnulify
-    .filter((x) => x)
-    .map((x) => x!);
-
   // group into arrays
-  const grouped = parsedContent
+  const grouped = resolvedPromises
     .reduce((acc, [version, x]) => {
       const newVersion = (acc[version] ?? []).concat(x);
 
