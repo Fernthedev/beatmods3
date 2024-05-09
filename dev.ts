@@ -5,6 +5,7 @@ import config, { setupOctokit } from "./fresh.config.ts";
 
 import "$std/dotenv/load.ts";
 
-setupOctokit()
+const token = Deno.env.get("GITHUB_TOKEN");
+setupOctokit(token);
 
 await dev(import.meta.url, "./main.ts", config);

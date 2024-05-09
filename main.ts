@@ -10,7 +10,7 @@ import { start } from "$fresh/server.ts";
 import manifest from "./fresh.gen.ts";
 import config, { setupOctokit } from "./fresh.config.ts";
 
-
-setupOctokit();
+const token = Deno.env.get("GITHUB_TOKEN");
+setupOctokit(token);
 
 await start(manifest, config);
