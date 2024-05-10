@@ -1,4 +1,5 @@
 import { type PageProps } from "$fresh/server.ts";
+import { Partial } from "$fresh/runtime.ts";
 export default function App({ Component }: PageProps) {
   return (
     <html>
@@ -12,8 +13,10 @@ export default function App({ Component }: PageProps) {
         <nav class="navbar bg-base-100">
           <a class="btn btn-ghost text-xl">QeatMods 3</a>
         </nav>
-        <div class={"bg-base-200 content"}>
-          <Component />
+        <div class={"bg-base-200 content"} f-client-nav>
+          <Partial name="body">
+            <Component />
+          </Partial>
         </div>
         <footer className="footer items-center p-4 bg-neutral text-neutral-content">
           <aside className="items-center grid-flow-row prose">

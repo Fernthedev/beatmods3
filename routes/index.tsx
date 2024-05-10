@@ -32,7 +32,7 @@ export default function Home(props: PageProps<HomePageData>) {
         <h1 class="text-4xl font-bold">Welcome to QeatMods 3</h1>
         <div class="my-4 flex flex-col gap-2">
           {versions.map((version) => (
-            <a class={"link prose text-lg"} href={`/repo/${version}`}>
+            <a f-partial={`/repo/${version}`} class={"link prose text-lg"} href={`/repo/${version}`}>
               {version}
             </a>
           ))}
