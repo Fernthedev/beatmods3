@@ -3,37 +3,45 @@ import { githubRepository, octokit } from "../../../fresh.config.ts";
 import { PackageMetadata } from "../../../types.ts";
 import * as path from "$std/path/mod.ts";
 import { getPackageContent } from "./[version]/[id].ts";
+import { getOrUpdateCache } from "../../../cacheUtil.ts";
 
 type PackageVersionTuple = [version: string, package_: PackageMetadata];
 
 export async function getPackagesAsCollection(): Promise<
   Record<string, PackageMetadata[]>
-> {
-  const tree = await octokit.rest.git.getTree(
-    {
-      ...githubRepository,
-      tree_sha: "main",
-      recursive: "true",
+  > {
+  // we only partially cache here to allow using newer
+  // package contents even if the tree list is outdated
+  const listFiles = await getOrUpdateCache(
+    ["mods.json", "listFiles"],
+    async () => {
+      const tree = await octokit.rest.git.getTree(
+        {
+          ...githubRepository,
+          tree_sha: "main",
+          recursive: "true",
+        },
+      );
+
+      return tree.data.tree
+        // match for number or period and ends with /
+        // then check if word and ends with .json
+        // for some reason this does not work when matching in string
+        .filter((x) => x.path?.match(/^[\d\.]+\/[\w]+\.json/));
+    },
+  );
+  const packageContents = listFiles.map(
+    async (x) => {
+      const content = await getPackageContent(x.path!);
+
+      return [
+        path.dirname(x.path!),
+        content,
+      ] as PackageVersionTuple;
     },
   );
 
-  const listFiles = tree.data.tree
-    // match for number or period and ends with /
-    // then check if word and ends with .json
-    // for some reason this does not work when matching in string
-    .filter((x) => x.path?.match(/^[\d\.]+\/[\w]+\.json/))
-    .map(
-      async (x) => {
-        const content = await getPackageContent(x.path!);
-
-        return [
-          path.dirname(x.path!),
-          content,
-        ] as PackageVersionTuple;
-      },
-    );
-
-  const resolvedPromises = await Promise.all(listFiles);
+  const resolvedPromises = await Promise.all(packageContents);
 
   // group into arrays
   const grouped = resolvedPromises
