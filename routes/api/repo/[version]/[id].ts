@@ -6,6 +6,7 @@ import {
 } from "../../../../fresh.config.ts";
 import { PackageMetadata } from "../../../../types.ts";
 import * as path from "$std/path/mod.ts";
+import { getOrUpdateCache } from "../../../../cacheUtil.ts";
 
 export async function getPackage(
   version: string,
@@ -23,22 +24,26 @@ export async function getPackageContent(filePath: string) {
     throw "File path does not match regex! should be {version}/{id}.json";
   }
 
-  const id = path.basename(filePath, path.extname(filePath));
+  const cacheKey = ["package", filePath];
 
-  const content = await octokit.rest.repos.getContent({
-    ...githubRepository,
-    path: filePath!,
+  return getOrUpdateCache(cacheKey, async () => {
+    const id = path.basename(filePath, path.extname(filePath));
+
+    const content = await octokit.rest.repos.getContent({
+      ...githubRepository,
+      path: filePath!,
+    });
+    if (Array.isArray(content.data)) throw new Deno.errors.IsADirectory();
+    if (content.data.type !== "file") throw new Deno.errors.IsADirectory();
+    if (!content.data.content) throw "Content is null!";
+
+    const packageMetadata = JSON.parse(atob(content.data.content!));
+
+    return {
+      ...packageMetadata,
+      id: id,
+    } as PackageMetadata;
   });
-  if (Array.isArray(content.data)) throw new Deno.errors.IsADirectory();
-  if (content.data.type !== "file") throw new Deno.errors.IsADirectory();
-  if (!content.data.content) throw "Content is null!";
-
-  const packageMetadata = JSON.parse(atob(content.data.content!));
-
-  return {
-    ...packageMetadata,
-    id: id,
-  } as PackageMetadata;
 }
 
 type VersionAPIData = {

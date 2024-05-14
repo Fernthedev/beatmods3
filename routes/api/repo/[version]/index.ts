@@ -1,4 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
+import { getOrUpdateCache } from "../../../../cacheUtil.ts";
 import {
   filePackagePathRegex,
   githubRepository,
@@ -45,25 +46,29 @@ export async function getPackageNamesInVersion(
 export async function getPackagesInVersion(
   version: string,
 ): Promise<PackageMetadata[]> {
-  const tree = await octokit.rest.git.getTree(
-    {
-      ...githubRepository,
-      tree_sha: "main",
-      recursive: "true",
-    },
-  );
+  const cacheKey = ["packageList", version];
 
-  const parsedContent = tree.data.tree
-    .filter((x) => x.path?.startsWith(`${version}/`))
-    .filter((x) => x.path?.match(filePackagePathRegex))
-    .map((entry) => getPackageContent(entry.path!));
+  return getOrUpdateCache(cacheKey, async () => {
+    const tree = await octokit.rest.git.getTree(
+      {
+        ...githubRepository,
+        tree_sha: "main",
+        recursive: "true",
+      },
+    );
 
-  const finished = await Promise.all(parsedContent);
+    const parsedContent = tree.data.tree
+      .filter((x) => x.path?.startsWith(`${version}/`))
+      .filter((x) => x.path?.match(filePackagePathRegex))
+      .map((entry) => getPackageContent(entry.path!));
 
-  return finished
-    // nonnulify
-    .filter((x) => x)
-    .map((x) => x!);
+    const finished = await Promise.all(parsedContent);
+
+    return finished
+      // nonnulify
+      .filter((x) => x)
+      .map((x) => x!);
+  });
 }
 
 export const handler: Handlers<null> = {

@@ -35,7 +35,11 @@
   },
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "preact"
+    "jsxImportSource": "preact",
+    "lib": [
+      "deno.window",
+      "deno.unstable"
+    ]
   },
   "nodeModulesDir": true
 }

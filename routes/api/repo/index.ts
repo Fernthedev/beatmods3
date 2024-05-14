@@ -1,33 +1,37 @@
 import { Handlers } from "$fresh/server.ts";
 import { githubRepository, octokit } from "../../../fresh.config.ts";
 import * as path from "$std/path/mod.ts";
+import { getOrUpdateCache } from "../../../cacheUtil.ts";
 
-export async function getVersions(): Promise<string[]> {
+export function getVersions(): Promise<string[]> {
   // Create a personal access token at https://github.com/settings/tokens/new?scopes=repo
 
-  const tree = await octokit.rest.git.getTree(
-    {
-      ...githubRepository,
-      tree_sha: "main",
-      recursive: "false",
-    },
-  );
+  const cacheKey = ["versions"];
 
-  // TODO: Sanitize version
+  return getOrUpdateCache(cacheKey, async () => {
+    const tree = await octokit.rest.git.getTree(
+      {
+        ...githubRepository,
+        tree_sha: "main",
+        recursive: "false",
+      },
+    );
 
-  const versions = tree.data.tree
-    .map((x) => x.path!)
-    .map((x) => path.dirname(x))
-    // match for number or period and ends with /
-    .filter((x) => x.length !== 0 && x !== ".");
+    // TODO: Sanitize version
 
-  if (versions.length === 0) {
-    throw new Deno.errors.NotFound();
-  }
+    const versions = tree.data.tree
+      .map((x) => x.path!)
+      .map((x) => path.dirname(x))
+      // match for number or period and ends with /
+      .filter((x) => x.length !== 0 && x !== ".");
 
-  return versions;
+    if (versions.length === 0) {
+      throw new Deno.errors.NotFound();
+    }
+
+    return versions;
+  });
 }
-
 
 export const handler: Handlers<null> = {
   async GET(_req, ctx) {

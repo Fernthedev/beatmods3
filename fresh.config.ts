@@ -11,6 +11,10 @@ export const githubRepository = {
   repo: "beatmods3-bs",
 } as const;
 
+const millisInSecond = 1000;
+// 5 minutes
+export const cacheTime = 5 * 60 * millisInSecond;
+
 // Create a personal access token at https://github.com/settings/tokens/new?scopes=repo
 export let octokit: Octokit = null!;
 
