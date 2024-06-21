@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { githubRepository, octokit } from "../../../fresh.config.ts";
+import { githubRepository, githubRepositoryFileRoot, octokit } from "../../../fresh.config.ts";
 import { PackageMetadata } from "../../../types.ts";
 import * as path from "$std/path/mod.ts";
 import { getPackageContent } from "./[version]/[id].ts";
@@ -27,15 +27,20 @@ export async function getPackagesAsCollection(): Promise<
         // match for number or period and ends with /
         // then check if word and ends with .json
         // for some reason this does not work when matching in string
-        .filter((x) => x.path?.match(/^[\d\.]+\/[\w]+\.json/));
+        .filter((x) => x.path?.startsWith(githubRepositoryFileRoot) && x.path?.match(/^[\d\.]+\/[\w]+\.json/))
     },
   );
   const packageContents = listFiles.map(
     async (x) => {
       const content = await getPackageContent(x.path!);
 
+      let version = path.dirname(x.path!);
+      if (githubRepositoryFileRoot.length > 0) {
+        version = version.substring(githubRepositoryFileRoot.length)
+      }
+
       return [
-        path.dirname(x.path!),
+        version,
         content,
       ] as PackageVersionTuple;
     },

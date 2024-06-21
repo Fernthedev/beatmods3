@@ -2,6 +2,7 @@ import { Handlers } from "$fresh/server.ts";
 import {
   filePackagePathRegex,
   githubRepository,
+  githubRepositoryFileRoot,
   octokit,
 } from "../../../../fresh.config.ts";
 import { PackageMetadata } from "../../../../types.ts";
@@ -14,7 +15,7 @@ export async function getPackage(
 ): Promise<PackageMetadata> {
   // Create a personal access token at https://github.com/settings/tokens/new?scopes=repo
 
-  return getPackageContent(`${version}/${id}.json`);
+  return getPackageContent(path.join(githubRepositoryFileRoot, version, `${id}.json`));
 }
 
 export async function getPackageContent(filePath: string) {

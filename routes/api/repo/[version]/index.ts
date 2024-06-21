@@ -3,10 +3,13 @@ import { getOrUpdateCache } from "../../../../cacheUtil.ts";
 import {
   filePackagePathRegex,
   githubRepository,
+  githubRepositoryFileRoot,
   octokit,
 } from "../../../../fresh.config.ts";
 import { PackageMetadata } from "../../../../types.ts";
 import { getPackageContent } from "./[id].ts";
+import * as path from "$std/path/mod.ts";
+
 
 export async function getPackageNamesInVersion(
   version: string,
@@ -23,9 +26,10 @@ export async function getPackageNamesInVersion(
 
   // TODO: Sanitize version
 
+  const versionDir = path.join(githubRepositoryFileRoot, version);
   const filesInVersion = tree.data.tree
     .map((x) => x.path!)
-    .filter((x) => x.startsWith(`${version}/`));
+    .filter((x) => x.startsWith(versionDir));
 
   // console.log(tree.data);
 
