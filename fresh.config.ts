@@ -7,8 +7,8 @@ import * as path from "$std/path/mod.ts";
 export const filePackagePathRegex = /^[\d\.]+\/[\w]+\.json/;
 
 export const githubRepository = {
-  owner: "Fernthedev",
-  repo: "beatmods3-bs",
+  owner: "DanTheMan827",
+  repo: "bsqmods",
 } as const;
 
 const millisInSecond = 1000;

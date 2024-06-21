@@ -1,10 +1,12 @@
 export interface PackageMetadata {
     id: string, // overwritten at server
-
+    
     version: string,
     qmodUrl: string,
     checksum?: string
-
+    funding?: string,
+    homepage?: string,
+    
     name?: string,
     description?: string,
     source?: string,
