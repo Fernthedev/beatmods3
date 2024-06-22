@@ -6,7 +6,7 @@ import * as path from "$std/path/mod.ts";
 
 export const filePackagePathRegex = /^[\d\.]+\/[\w]+\.json/;
 
-export const githubRepositoryFileRoot = '/mods';
+export const githubRepositoryFileRoot = 'mods/';
 export const githubRepository = {
   owner: "DanTheMan827",
   repo: "bsqmods",

@@ -47,7 +47,7 @@ export async function getPackageNamesInVersion(
   return filesInVersion;
 }
 
-export async function getPackagesInVersion(
+export function getPackagesInVersion(
   version: string,
 ): Promise<PackageMetadata[]> {
   const cacheKey = ["packageList", version];
@@ -61,9 +61,19 @@ export async function getPackagesInVersion(
       },
     );
 
+    const versionDir = path.join(githubRepositoryFileRoot, version) + path.SEPARATOR;
+
     const parsedContent = tree.data.tree
-      .filter((x) => x.path?.startsWith(`${version}/`))
-      .filter((x) => x.path?.match(filePackagePathRegex))
+      .filter((x) => x.path?.startsWith(versionDir))
+      .filter((x) => {
+        // remove base path
+
+        // TODO: Fix
+        // const fixedPath = x.path!.substring(versionDir.length)
+        // return fixedPath.match(filePackagePathRegex);
+
+        return true
+      })
       .map((entry) => getPackageContent(entry.path!));
 
     const finished = await Promise.all(parsedContent);

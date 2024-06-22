@@ -18,10 +18,12 @@ export async function getPackage(
   return getPackageContent(path.join(githubRepositoryFileRoot, version, `${id}.json`));
 }
 
-export async function getPackageContent(filePath: string) {
+export function getPackageContent(filePath: string) {
   // TODO: Sanitize version and id
 
-  if (!filePath.match(filePackagePathRegex)) {
+  const fixedPath = filePath.substring(githubRepositoryFileRoot.length)
+
+  if (!filePath.match(fixedPath)) {
     throw "File path does not match regex! should be {version}/{id}.json";
   }
 

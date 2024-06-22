@@ -1,5 +1,9 @@
 import { Handlers } from "$fresh/server.ts";
-import { githubRepository, githubRepositoryFileRoot, octokit } from "../../../fresh.config.ts";
+import {
+  githubRepository,
+  githubRepositoryFileRoot,
+  octokit,
+} from "../../../fresh.config.ts";
 import * as path from "$std/path/mod.ts";
 import { getOrUpdateCache } from "../../../cacheUtil.ts";
 
@@ -20,17 +24,21 @@ export function getVersions(): Promise<string[]> {
     // TODO: Sanitize version
 
     const versions = tree.data.tree
-      .filter(x => x.path?.startsWith(githubRepositoryFileRoot))
+      .filter((x) => x.path?.startsWith(githubRepositoryFileRoot))
       .map((x) => x.path!.substring(githubRepositoryFileRoot.length))
       .map((x) => path.dirname(x))
       // match for number or period and ends with /
-      .filter((x) => x.length !== 0 && x !== ".");
+      .filter((x) => x.length !== 0 && x !== "." && x !== "/");
 
     if (versions.length === 0) {
       throw new Deno.errors.NotFound();
     }
 
-    return versions;
+    // unique elements
+    const uniqueVersions = new Set(versions);
+    const arr = Array.from(uniqueVersions.values());
+
+    return arr;
   });
 }
 
